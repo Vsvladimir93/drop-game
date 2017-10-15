@@ -48,7 +48,7 @@ public class BucketController {
 
     }
 
-    public void borderCheck (Bucket bucket) {
+    public void borderCheck  (Bucket bucket) {
 
         if (bucket.rectangle.y < 0) {
             bucket.rectangle.y = 0;
