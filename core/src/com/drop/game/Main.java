@@ -9,24 +9,24 @@ import com.drop.game.view.MenuScreen;
 
 
 public class Main extends Game {
-    private Screen gameScreen;
-    private Screen menuScreen;
-    private Screen gameOverScreen = new GameOverScreen();
+    private static Screen gameScreen;
+    private static Screen menuScreen;
+    private static Screen gameOverScreen = new GameOverScreen();
     public Game game;
     private static Main main;
 
-    private Main() {
+    public Main() {
 
     }
 
 
     @Override
     public void create() {
-        menuScreen = new MenuScreen(this);
+       menuScreen = new MenuScreen(this);
 
 
-setScreen(menuScreen);
-//      setScreen(gameOverScreen);
+        setScreen(menuScreen);
+
 
     }
 
@@ -37,9 +37,8 @@ setScreen(menuScreen);
     }
 
 
-
     public static Main getMain() {
-        if(main  == null){
+        if (main == null) {
             main = new Main();
         }
         return main;
@@ -50,16 +49,37 @@ setScreen(menuScreen);
             gameScreen = new GameScreen();
         }
         setScreen(gameScreen);
+        menuScreen.dispose();
+        menuScreen = null;
+
     }
 
     public void useGameOverScreen() {
         if (gameOverScreen == null) {
-            gameOverScreen = new GameScreen();
-            gameScreen.dispose();
+            gameOverScreen = new GameOverScreen();
+
+        }
+        setScreen(gameOverScreen);
+
+        gameScreen = null;
+    }
+
+    public void useMenuScreen() {
+        if (menuScreen == null) {
+            menuScreen = new MenuScreen(this);
 
         }
 
-        setScreen(gameOverScreen);
+        setScreen(menuScreen);
+        if (gameOverScreen != null) gameOverScreen.dispose();
+        gameOverScreen = null;
+
+    }
+
+    public void test() {
+        if (menuScreen == null) System.out.println("menuScreen-null");
+        if (gameScreen == null) System.out.println("gameScreen-null");
+        if (gameOverScreen == null) System.out.println("gameOverScreen-null");
     }
 
 }

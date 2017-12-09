@@ -16,8 +16,6 @@ public class GameBackground {
     Texture background = new Texture(pixmap);
 
     GameBackground() {
-
-
     }
 
     String[] arr = {"background2.1.png", "background2.2.png",

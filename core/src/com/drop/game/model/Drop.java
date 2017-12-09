@@ -12,17 +12,8 @@ public class Drop extends FallingGameObject {
 
     }
 
-    public Drop(String atlasFile, String spriteName) {
-        super(atlasFile, spriteName);
-
-    }
-
     public Drop(float x, float y, float width, float height) {
         super(x, y, width, height);
-    }
-
-    public Drop() {
-
     }
 
     @Override

@@ -54,7 +54,6 @@ public class GameObject {
         sprite.draw(batch);
     }
 
-
     public GameObject spawn(float x, float y) {
         throw new RuntimeException("Child class " + this.getClass().getSimpleName() + "  have to override method spawn");
     }
@@ -65,24 +64,9 @@ public class GameObject {
 
     }
 
-    public void deleteObjects(ArrayList arrayList) {
-
-        Iterator<FallingGameObject> iter = arrayList.iterator();
-
-        while (iter.hasNext()) {
-            if (iter.next().rectangle.y + 64 < 200) iter.remove();
-
-        }
-
-    }
-
-
-
-
     public String getSpriteName() {
         return spriteName;
     }
-
 
 
 }

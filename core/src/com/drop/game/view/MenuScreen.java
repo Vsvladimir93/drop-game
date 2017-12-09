@@ -1,7 +1,7 @@
 package com.drop.game.view;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,22 +12,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.drop.game.Main;
 import com.drop.game.model.User;
 
+import java.io.IOException;
+
 
 /**
  * Created by Vova on 30.09.2017.
  */
 public class MenuScreen implements Screen {
-    MenuScreen menuScreen;
     private Texture background;
     private SpriteBatch batch;
 
     Stage stage;
     TextField textField;
     Skin skin;
-    InputListener inputListener;
 
-
-    GameScreen gameScreen;
 
     User user;
     private String userName = "";
@@ -37,6 +35,7 @@ public class MenuScreen implements Screen {
     public MenuScreen(Main main) {
         super();
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+        System.out.println("0987");
         this.main = main;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -58,7 +57,6 @@ public class MenuScreen implements Screen {
         Image img = new Image(background);
         img.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
         btn.setPosition(625, 530);
         btn.setSize(150, 50);
         btn1.setPosition(225, 150);
@@ -73,7 +71,6 @@ public class MenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -83,20 +80,23 @@ public class MenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 System.out.println(textField.getText());
-                user.name.add(textField.getText());
-                userName = textField.getText();
+                user.setUserName(textField.getText());
+                try {
+                    user.writer(textField.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                User.setDropsCollected(0);
+                main.getMain().useGameScreen();
 
-                main.useGameScreen();
-                dispose();
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
 
+
         btn2.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                stage.dispose();
-                batch.dispose();
 
                 Gdx.app.exit();
                 return super.touchDown(event, x, y, pointer, button);
@@ -108,44 +108,41 @@ public class MenuScreen implements Screen {
         textField.setSize(350, 60);
         textField.setPosition(225, 250);
 
-
         stage.addActor(img);
         stage.addActor(btn);
         stage.addActor(btn1);
         stage.addActor(btn2);
         stage.addActor(textField);
 
-
     }
-
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         stage.act();
         batch.begin();
 
-//        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.draw();
 
-
-
-
-     /*  if (Gdx.input.justTouched()) {
-           main.useGameScreen();
-dispose();
-
-        }*/
         batch.end();
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+            System.out.println(textField.getText());
+            user.setUserName(textField.getText());
+            try {
+                user.writer(textField.getText());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            User.setDropsCollected(0);
+            main.getMain().useGameScreen();
+
+        }
 
     }
 
-    public String getUser(){
-            return userName;
-    }
+
 
     @Override
     public void resize(int width, int height) {
@@ -169,7 +166,8 @@ dispose();
 
     @Override
     public void dispose() {
-        System.out.println("\n" +
-                "dispose();");
+        stage.dispose();
+        background.dispose();
+        batch.dispose();
     }
 }

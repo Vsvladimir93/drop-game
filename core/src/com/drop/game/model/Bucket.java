@@ -14,13 +14,4 @@ public class Bucket extends GameObject {
         super(atlasFile, spriteName, x, y, width, height);
     }
 
-    public Bucket() {
-
-    }
-
-
-
-
-
-
 }
